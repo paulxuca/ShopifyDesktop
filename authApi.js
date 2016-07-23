@@ -2,7 +2,7 @@ var buildAuthorizationUrl = require('shopify-prime').buildAuthorizationUrl;
 var authorize = require('authorize').authorize;
 var User = require('./models/user');
 
-export default function(app){
+module.exports = function(app){
   app.get('/', function(request, response) {
       response.send('App is running.');
   }); 
