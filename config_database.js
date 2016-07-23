@@ -1,4 +1,4 @@
 export default {
-  username: 'paulxuca',
+  username: 'heroku',
   password: 'flamerider1'
 };
