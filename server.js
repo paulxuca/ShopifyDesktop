@@ -1,10 +1,11 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import authApi from './authApi';
+var express = require('express');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var authApi = require('./authApi');
 
 
-const app = express();
+
+var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 
@@ -13,16 +14,15 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-mongoose.connect(process.env.MONGODB_URI, (err) => {
+mongoose.connect(process.env.MONGODB_URI, function(err){
   if(err) console.log(err);
 });
 authApi(app); // use auth api
 
-app.listen(app.get('port'), 'localhost', err => {
+app.listen(app.get('port'), 'localhost', function(err){
   if (err) {
     console.error(err);
     return;
   }
-
-  console.log(`Listening on port ${app.get('port')}`);
+  console.log('Listening on port' + app.get('port'));
 });

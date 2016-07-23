@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
 import supergoose from 'supergoose';
 
-const userSchema = new mongoose.Schema({
+var mongoose = require('mongoose');
+var supergoose = require('supergoose');
+
+var userSchema = new mongoose.Schema({
   storeName: String,
   accessToken: String
 });
 
 userSchema.plugin(supergoose, { instance: mongoose });
 
-const User = mongoose.model('User', userSchema);
-export default User;
+var User = mongoose.model('User', userSchema);
+module.exports = User;
