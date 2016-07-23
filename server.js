@@ -4,7 +4,6 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
 import authApi from './authApi';
-import { username, password } from './config_database';
 
 
 const app = express();
@@ -16,7 +15,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-mongoose.connect(`mongodb://${username}:${password}@ds011735.mlab.com:11735/shopify`, (err) => {
+mongoose.connect(process.env.MONGODB_URI, (err) => {
   if(err) console.log(err);
 });
 authApi(app); // use auth api
