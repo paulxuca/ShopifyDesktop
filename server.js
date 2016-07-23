@@ -7,7 +7,7 @@ import authApi from './authApi';
 
 
 const app = express();
-const PORT = 3000;
+app.set('port', (process.env.PORT || 5000));
 
 
 app.use(bodyParser.json({}));       // to support JSON-encoded bodies
@@ -20,13 +20,13 @@ mongoose.connect(process.env.MONGODB_URI, (err) => {
 });
 authApi(app); // use auth api
 
-const server = app.listen(PORT, 'localhost', err => {
+const server = app.listen(app.get('port'), 'localhost', err => {
   if (err) {
     console.error(err);
     return;
   }
 
-  console.log(`Listening at http://localhost:${PORT}`);
+  console.log(`Listening at http://localhost:${app.get('port')}`);
 });
 
 process.on('SIGTERM', () => {
