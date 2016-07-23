@@ -18,18 +18,11 @@ mongoose.connect(process.env.MONGODB_URI, (err) => {
 });
 authApi(app); // use auth api
 
-const server = app.listen(app.get('port'), 'localhost', err => {
+app.listen(app.get('port'), 'localhost', err => {
   if (err) {
     console.error(err);
     return;
   }
 
   console.log(`Listening on port ${app.get('port')}`);
-});
-
-process.on('SIGTERM', () => {
-  console.log('Stopping deev server');
-  server.close(() => {
-    process.exit(0);
-  });
 });
