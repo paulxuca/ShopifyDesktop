@@ -18,11 +18,6 @@ mongoose.connect(process.env.MONGODB_URI, (err) => {
 });
 authApi(app); // use auth api
 
-app.get('/', function(request, response) {
-    var result = 'App is running'
-    response.send(result);
-});
-
 app.listen(app.get('port'), 'localhost', err => {
   if (err) {
     console.error(err);

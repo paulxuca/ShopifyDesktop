@@ -4,6 +4,10 @@ import User from './models/user';
 
 
 export default (app) => {
+  app.get('/', function(request, response) {
+      response.send('App is running.');
+  }); 
+
   app.post('/test', (req, res) => {
     res.status(200).json({ data: 'done' });
   });
