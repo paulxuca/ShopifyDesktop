@@ -1,6 +1,3 @@
-import mongoose from 'mongoose';
-import supergoose from 'supergoose';
-
 var mongoose = require('mongoose');
 var supergoose = require('supergoose');
 
