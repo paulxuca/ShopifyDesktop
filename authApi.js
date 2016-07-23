@@ -1,5 +1,5 @@
 var buildAuthorizationUrl = require('shopify-prime').buildAuthorizationUrl;
-var authorize = require('authorize').authorize;
+var authorize = require('shopify-prime').authorize;
 var User = require('./models/user');
 
 module.exports = function(app){
