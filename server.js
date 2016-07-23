@@ -1,8 +1,6 @@
 import express from 'express';
-
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-
 import authApi from './authApi';
 
 
@@ -26,7 +24,7 @@ const server = app.listen(app.get('port'), 'localhost', err => {
     return;
   }
 
-  console.log(`Listening at http://localhost:${app.get('port')}`);
+  console.log(`Listening on port ${app.get('port')}`);
 });
 
 process.on('SIGTERM', () => {
