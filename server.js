@@ -16,10 +16,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 mongoose.connect(process.env.MONGODB_URI, function(err){
   if(err) console.log(err);
-});
+}); 
 authApi(app); // use auth api
 
-app.listen(app.get('port'), 'localhost', function(err){
+app.listen(app.get('port'), function(err){
   if (err) {
     console.error(err);
     return;
