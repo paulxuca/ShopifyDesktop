@@ -4,7 +4,7 @@ var User = require('./models/user');
 
 module.exports = function(app){
   app.get('/', function(request, response) {
-      response.send('App is running.');
+      response.status(200).json({data: 'Yes its working'});
   }); 
 
   app.post('/test', function(req, res){
