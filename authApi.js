@@ -4,6 +4,8 @@ var User = require('./models/user');
 var apiKey = require('./config_shopify').apiKey;
 var sharedSecret = require('./config_shopify').sharedSecret;
 
+var baseURL = 'http://shopifydesktopserver.heroku.com';
+
 module.exports = function(app){
   app.get('/', function(request, response) {
       response.status(200).json({data: 'Yes its working'});
@@ -21,7 +23,7 @@ module.exports = function(app){
 
   app.post('/auth/shopifyRedirect', function(req, res){
     var shopURL = 'https://' + req.body.url + '.myshopify.com';
-    var redirectUrl = 'http://localhost:3000/auth/shopifyRedirect';
+    var redirectUrl = baseURL + '/auth/shopifyRedirect';
     var permissions =
     ['read_orders',
     'read_content',
