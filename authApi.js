@@ -4,7 +4,7 @@ var User = require('./models/user');
 var apiKey = require('./config_shopify').apiKey;
 var sharedSecret = require('./config_shopify').sharedSecret;
 
-var baseURL = 'http://shopifydesktopserver.heroku.com';
+var baseURL = 'http://shopifydesktopserver.herokuapp.com';
 
 module.exports = function(app){
   app.get('/', function(request, response) {
