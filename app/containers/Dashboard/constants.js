@@ -1,0 +1,8 @@
+export const FETCH_DATA = 'FETCH_DATA';
+export const FETCH_DATA_SUCCESS = 'FETCH_DATA_SUCCESS';
+
+export const DISPLAY_DATA = 'DISPLAY_DATA';
+export const DISPLAY_DATA_SUCCESS = 'DISPLAY_DATA_SUCCESS';
+export const DISPLAY_DATA_ERROR = 'DISPLAY_DATA_ERROR';
+
+export const DUMP_LIST = 'DUMP_LIST';
