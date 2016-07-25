@@ -5,6 +5,8 @@ import fuzzy from 'fuzzy';
 import Autosuggest from 'react-autosuggest';
 
 import { getAutofillFieldsAction } from './actions';
+import searchConstants from './searchConstants';
+
 
 const initialState = {
   searchQuery: '',
@@ -73,7 +75,7 @@ class DashboardSearch extends Component {
           <Autosuggest
             suggestions={suggestions}
             getSuggestionValue={function (sug) { return sug.string; }}
-            renderSuggestion={function (sug) { return <span>{sug.string}</span>; }}
+            renderSuggestion={(sug) => { return <span>{sug.string}<span className="search-description"> {searchConstants[this.props.dataType][sug.string]}</span></span>; }}
             inputProps={inputProps}
             theme={{ input: 'form-control', container: { display: 'flex', flex: 10 }, suggestionsContainer: 'suggestions', suggestionFocused: { backgroundColor: '#3187e1', color: 'white' }, suggestion: { padding: '5px 0px 5px 40px' } }}
             onSuggestionSelected={(event, { suggestionValue }) => {

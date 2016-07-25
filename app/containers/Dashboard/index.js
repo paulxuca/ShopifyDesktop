@@ -63,7 +63,6 @@ class Dashboard extends Component {
 
   // Handles Changing search params and pagination
   onChangeListDisplay = (data) => {
-
     const { displayParams } = this.state;
 
     this.props.actions.dataActions.displayDataAction(displayParams.dataType,

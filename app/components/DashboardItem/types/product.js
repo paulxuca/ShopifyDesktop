@@ -9,17 +9,17 @@ export function generateProducts(properties, onClickFunction) {
     const variantCount = variantData.reduce((total, each) => { return total + each.inventory_quantity; }
       , 0);
     const variantSpan = (variantCount > 0) ?
-    `${variantCount} available in ${variantData.length} variants` :
-    'N/A';
+      <p><span className="highlight-warning">{`${variantCount}`}</span> {`available in ${variantData.length} variants`}</p> :
+      <p>N/A</p>;
     return (
-      <li className="list-group-item" onClick={onClickFunction}>
+      <li className="list-group-item product" onClick={onClickFunction}>
         <div className="media-body">
           <div style={{ backgroundImage: `url(${imageData.src})` }} className="product-image" />
           <div className="product-information">
             <p>{properties.title}</p>
             <p>{properties.product_type}</p>
             <p>{properties.vendor}</p>
-            <p>{variantSpan}</p>
+            {variantSpan}
           </div>
         </div>
       </li>);
