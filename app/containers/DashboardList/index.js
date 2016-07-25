@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import DashboardListItem from '../../components/DashboardItem';
 import Preset from '../../components/DashboardItem/Preset';
+import Dropdown from '../../components/Dropdown';
 import DashboardSearch from '../DashboardSearch';
 
 import searchPresets from '../../utils/ShopifyConstants/search';
@@ -74,6 +75,7 @@ class DashboardList extends Component {
             style={{ flex: 0.5 }}
           >
           </span>
+          <Dropdown active={this.state.presetsMenuOpen} />
         </div>
       </div>);
   }

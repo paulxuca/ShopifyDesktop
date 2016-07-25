@@ -7,12 +7,16 @@ import Autosuggest from 'react-autosuggest';
 import { getAutofillFieldsAction } from './actions';
 import searchConstants from './searchConstants';
 
+import Dropdown from '../../components/Dropdown';
+
 
 const initialState = {
   searchQuery: '',
   searchbarFocus: false,
   searchbarSelector: 0,
-  suggestions: undefined
+  suggestions: undefined,
+  querySaveDropdownOpen: false,
+  querySaveName: ''
 };
 
 function getSuggestions(data, fields) {
@@ -48,6 +52,7 @@ class DashboardSearch extends Component {
   }
 
   onSearchInput = (newValue) => {
+    if (this.state.querySaveDropdownOpen) this.setState({ querySaveDropdownOpen: false });
     this.setState({ searchQuery: newValue,
                     suggestions: getSuggestions(newValue, this.props.state.fields) });
   }
@@ -74,21 +79,51 @@ class DashboardSearch extends Component {
         <div className="search-input">
           <Autosuggest
             suggestions={suggestions}
-            getSuggestionValue={function (sug) { return sug.string; }}
-            renderSuggestion={(sug) => { return <span>{sug.string}<span className="search-description"> {searchConstants[this.props.dataType][sug.string]}</span></span>; }}
+            getSuggestionValue={(sug) => { return sug.string; }}
+            renderSuggestion={(sug) => {
+              return (
+                <span>
+                  {sug.string}
+                  <span className="search-description">
+                    {` ${searchConstants[this.props.dataType][sug.string] || ''}`}
+                  </span>
+                </span>);
+            }}
             inputProps={inputProps}
-            theme={{ input: 'form-control', container: { display: 'flex', flex: 10 }, suggestionsContainer: 'suggestions', suggestionFocused: { backgroundColor: '#3187e1', color: 'white' }, suggestion: { padding: '5px 0px 5px 40px' } }}
+            theme={{ input: 'form-control',
+                     container: 'suggestion-container',
+                     suggestionsContainer: 'suggestions',
+                     suggestionFocused: 'suggestion-container-focused',
+                     suggestion: 'suggestion-container-suggestion' }}
             onSuggestionSelected={(event, { suggestionValue }) => {
-              this.setState({ searchQuery: selectDropdown(this.state.searchQuery, suggestionValue) });
+              this.setState({ searchQuery: selectDropdown(this.state.searchQuery,
+              suggestionValue) });
             }}
             onSubmit={this.onSearch}
           />
           <span className="icon icon-search" onClick={this.onSearch} />
+          <span
+            className="icon icon-pencil"
+            onClick={() => {
+              this.setState({
+                querySaveDropdownOpen: !this.state.querySaveDropdownOpen
+              }); }}
+          />
+          <Dropdown active={this.state.querySaveDropdownOpen}>
+            <form>
+              <input
+                value={this.state.querySaveName}
+                onInput={(e) => { this.setState({ querySaveName: e.target.value }); }}
+                placeholder="Name your query!"
+                className="form-control"
+              />
+              <button className="styled-btn">Save</button>
+            </form>
+          </Dropdown>
         </div>
       </li>);
   }
 }
-
 
 function mapStateToProps(state) {
   return {

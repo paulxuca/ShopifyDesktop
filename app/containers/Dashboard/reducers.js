@@ -57,10 +57,10 @@ export default function dashboardReducer(state = initialState, action) {
         isFetching: false
       };
     case DUMP_LIST:
-      return{
+      return {
         ...state,
         dataFetched: null
-      }
+      };
     default:
       return state;
   }
