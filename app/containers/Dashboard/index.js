@@ -153,7 +153,11 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    state
+    state: {
+      mainAppReducer: state.mainAppReducer,
+      dashboardMainReducer: state.dashboardMainReducer,
+      navigationReducer: state.navigationReducer
+    }
   };
 }
 

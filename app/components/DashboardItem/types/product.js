@@ -14,7 +14,7 @@ export function generateProducts(properties, onClickFunction) {
     return (
       <li className="list-group-item product" onClick={onClickFunction}>
         <div className="media-body">
-          <div style={{ backgroundImage: `url(${imageData.src})` }} className="product-image" />
+          <div style={{ backgroundImage: `url(${imageData.src}), url(https://placeholdit.imgix.net/~text?txtsize=33&w=350&h=150)` }} className="product-image" />
           <div className="product-information">
             <p>{properties.title}</p>
             <p>{properties.product_type}</p>

@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import DashboardListItem from '../../components/DashboardItem';
 import Preset from '../../components/DashboardItem/Preset';
 import Dropdown from '../../components/Dropdown';
 import DashboardSearch from '../DashboardSearch';
 
+import * as dashboardActions from './actions';
 import searchPresets from '../../utils/ShopifyConstants/search';
 
 class DashboardList extends Component {
@@ -24,6 +27,12 @@ class DashboardList extends Component {
     this.state = {
       presetsMenuOpen: false
     };
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.dataType !== this.props.dataType) {
+      this.props.actions.dashboardActions.fetchQueryAction(newProps.dataType);
+    }
   }
 
   onListItemClick = (uniqueID) => {
@@ -144,4 +153,20 @@ class DashboardList extends Component {
   }
 }
 
-export default DashboardList;
+function mapStateToProps(state) {
+  return {
+    state: {
+      dashboardList: state.dashboardListReducer
+    }
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: {
+      dashboardActions: bindActionCreators(dashboardActions, dispatch)
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardList);

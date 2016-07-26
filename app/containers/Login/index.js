@@ -54,7 +54,9 @@ class HomePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    state
+    state: {
+      mainAppReducer: state.mainAppReducer
+    }
   };
 }
 

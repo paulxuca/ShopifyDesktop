@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import fuzzy from 'fuzzy';
 import Autosuggest from 'react-autosuggest';
 
-import { getAutofillFieldsAction } from './actions';
+import * as searchActions from './actions';
 import searchConstants from './searchConstants';
+import { getSuggestions, selectDropdown } from './helpers';
 
 import Dropdown from '../../components/Dropdown';
 
@@ -18,18 +18,6 @@ const initialState = {
   querySaveDropdownOpen: false,
   querySaveName: ''
 };
-
-function getSuggestions(data, fields) {
-  return fuzzy.filter(data.replace(/ /g, '')
-              .split(/AND|WHERE|SORT|SORT BY/i).pop()
-              , fields);
-}
-
-function selectDropdown(currentState, newData) {
-  const filtered = currentState.split(' ');
-  filtered.splice(filtered.length - 1, 1, newData);
-  return filtered.join(' ');
-}
 
 class DashboardSearch extends Component {
   static PropTypes = {
@@ -110,7 +98,12 @@ class DashboardSearch extends Component {
               }); }}
           />
           <Dropdown active={this.state.querySaveDropdownOpen}>
-            <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                this.props.actions.searchActions.saveQueryAction(this.state.searchQuery, this.props.dataType, this.state.querySaveName);
+              }}
+            >
               <input
                 value={this.state.querySaveName}
                 onInput={(e) => { this.setState({ querySaveName: e.target.value }); }}
@@ -134,7 +127,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      searchActions: bindActionCreators({ getAutofillFieldsAction }, dispatch)
+      searchActions: bindActionCreators(searchActions, dispatch)
     }
   };
 }
