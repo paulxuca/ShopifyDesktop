@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
@@ -37,6 +38,10 @@ class DashboardSearch extends Component {
       this.setState(initialState);
       this.props.actions.searchActions.getAutofillFieldsAction(newProps.dataType);
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   onSearchInput = (newValue) => {

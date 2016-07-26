@@ -106,6 +106,7 @@
     "moment": "^2.14.1",
     "postcss": "^5.1.0",
     "react": "^15.2.1",
+    "react-addons-shallow-compare": "^15.2.1",
     "react-autosuggest": "^3.9.0",
     "react-dom": "^15.2.1",
     "react-redux": "^4.4.5",

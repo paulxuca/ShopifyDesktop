@@ -25,7 +25,8 @@ class DashboardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      presetsMenuOpen: false
+      presetsMenuOpen: false,
+      presetsGenerated: false
     };
   }
 
@@ -35,6 +36,16 @@ class DashboardList extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.listData !== this.props.listData) {
+      return true;
+    } else if (nextState.presetsMenuOpen !== this.state.presetsMenuOpen) {
+      return true;
+    }
+    return false;
+  }
+
+
   onListItemClick = (uniqueID) => {
     this.props.onListItemClick(`${uniqueID}_${this.props.dataType}`); // eslint-disable-line
   }
@@ -43,7 +54,7 @@ class DashboardList extends Component {
     this.props.onSearchQuery(query);
   }
 
-  generateListItem(data) {
+  generateListItem = (data) => {
     const { dataType } = this.props; //eslint-disable-line
     return (
       <DashboardListItem
@@ -63,7 +74,22 @@ class DashboardList extends Component {
     return null;
   }
 
-  generatePresets() {
+  generateUserPresets = () => {
+    const { queries } = this.props.state.dashboardList;
+    const listNodes = [];
+    for (let key in queries) { //eslint-disable-line
+      listNodes.push(
+        <Preset
+          onPresetClick={this.onPresetClick}
+          name={queries[key].name}
+          key={queries[key].name}
+          query={queries[key].query}
+        />);
+    }
+    return listNodes;
+  }
+
+  generatePresets = () => {
     return (
       <div className="search-presets">
         <div className="presets-desc">
@@ -84,7 +110,9 @@ class DashboardList extends Component {
             style={{ flex: 0.5 }}
           >
           </span>
-          <Dropdown active={this.state.presetsMenuOpen} />
+          <Dropdown active={this.state.presetsMenuOpen}>
+            {this.generateUserPresets()}
+          </Dropdown>
         </div>
       </div>);
   }

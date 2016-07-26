@@ -10,6 +10,13 @@ class DashboardNavigation extends Component {
     onClick: PropTypes.func.isRequired
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.currentView === this.props.currentView) {
+      return false;
+    }
+    return true;
+  }
+
   navigateToNewView = (nextView) => {
     if (nextView !== this.props.currentView) this.props.onClick(nextView); // eslint-disable-line
   }

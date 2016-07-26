@@ -11,10 +11,10 @@ function fetchQueryAction(dataType) {
     dispatch(fetchQueryDispatch());
     storage.get('queries', (err, data) => {
       if (err) console.log(err); // eslint-disable-line
-      dispatch(fetchQueryDispatchSuccess(
-      _.pickBy(data, (elem) => {
+      const picked = _.pickBy(data, (elem) => {
         return elem.dataType === dataType;
-      })));
+      });
+      dispatch(fetchQueryDispatchSuccess(picked));
     });
   };
 }

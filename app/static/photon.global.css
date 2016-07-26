@@ -204,6 +204,7 @@ h6 {
   overflow-y: auto;
   display: flex;
   flex: 1;
+  -webkit-app-region: no-drag;
 }
 
 .selectable-text {
@@ -572,6 +573,10 @@ label {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+input {
+  -webkit-app-region: no-drag;
 }
 
 input[type="search"] {

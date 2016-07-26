@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { fetchDataAction, displayDataAction } from './actions';
 import { navigateTo } from '../DashboardNavigation/actions';
 import { checkCredentials } from '../App/actions';
+import { shallowMerge } from '../../utils/sharedHelpers';
 
 import AppHeader from '../AppHeader';
 import DashboardNavigation from '../DashboardNavigation';
 import DashboardList from '../DashboardList';
 import DashboardDetail from '../DashboardDetail';
-
-
-
-function shallowMerge(mergedTo, toMerge) {
-  return Object.assign(mergedTo, toMerge);
-}
 
 
 class Dashboard extends Component {
@@ -28,6 +24,7 @@ class Dashboard extends Component {
       }
     };
   }
+
 
   componentDidMount() {
     /*
@@ -59,6 +56,10 @@ class Dashboard extends Component {
         displayDataAction(this.state.displayParams.dataType, this.state.displayParams);
       });
     });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   // Handles Changing search params and pagination
@@ -98,7 +99,6 @@ class Dashboard extends Component {
     });
   }
 
-
   // Helper function to update View Params in a promise
   updateViewParams = (newParams) => {
     return new Promise((resolve) => {
@@ -119,12 +119,10 @@ class Dashboard extends Component {
     const { storeName } = this.props.state.mainAppReducer.data;
     const { dataFetched, isFetching } = this.props.state.dashboardMainReducer;
     const { view } = this.props.state.navigationReducer;
-    const { dataType } = this.state.displayParams;
+    const { dataType, query } = this.state.displayParams;
 
     return (
-      <AppHeader
-
-      >
+      <AppHeader>
         <div className="window-content">
           <div className="pane-group">
             <DashboardNavigation
@@ -137,7 +135,7 @@ class Dashboard extends Component {
               dataType={dataType}
               isListFetching={isFetching}
               displayParams={this.state.displayParams[`${dataType}_pointer`]}
-              searchQuery={this.state.displayParams.query}
+              searchQuery={query}
               onListItemClick={this.onListItemClick}
               onChangeDisplay={this.onChangeListDisplay}
               onSearchQuery={this.onSearchQuery}

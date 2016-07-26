@@ -5,7 +5,7 @@ export default class Preset extends Component {
     name: PropTypes.string.isRequired,
     query: PropTypes.string.isRequired,
     onPresetClick: PropTypes.func.isRequired,
-    currentQuery: PropTypes.bool.isRequired
+    currentQuery: PropTypes.bool
   }
 
   onPresetClick() {
