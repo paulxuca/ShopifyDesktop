@@ -34,19 +34,29 @@ class HomePage extends Component {
     this.props.actions.loginShop(this.state.shopName) // eslint-disable-line react/prop-types
     .then(() => {
       const { accessToken, storeName } = this.props.state.mainAppReducer.data; // eslint-disable-line react/prop-types, max-len
-      if (accessToken && storeName) this.props.router.push('/dashboard'); // eslint-disable-line react/prop-types, max-len
+      // if (accessToken && storeName) this.props.router.push('/dashboard'); // eslint-disable-line react/prop-types, max-len
     })
     .catch(err => { console.log(err); });
   }
 
   render() {
     const { errors, data } = this.props.state.mainAppReducer; // eslint-disable-line
-    const loading = (errors === '' && data === '') ? <h1>Loading</h1> : null;
+    const loading = (errors === '' && data === '') ? <div className="overlay" /> : null;
     return (
       <div>
         <AppControls />
-        <Auth onChange={this.handleStoreNameChange} onSubmit={this.handleStoreNameSubmit} />
         {loading}
+        <div style={{ backgroundImage: 'url("static/assets/loginbg.png")', height: '100vh' }}>
+          <div className="login-inner">
+            <div className="login-form-row">
+              <img src="static/assets/shopify.svg" role="presentation" className="shopifyLogo" />
+              <div className="login-form">
+                <Auth onChange={this.handleStoreNameChange} onSubmit={this.handleStoreNameSubmit} />
+              </div>
+            </div>
+          </div>
+        </div>
+        
       </div>
     );
   }

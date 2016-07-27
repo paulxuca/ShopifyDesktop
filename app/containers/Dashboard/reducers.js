@@ -1,7 +1,4 @@
 import {
-  FETCH_DATA,
-  FETCH_DATA_SUCCESS,
-  FETCH_DATA_ERROR,
   DISPLAY_DATA,
   DISPLAY_DATA_SUCCESS,
   DISPLAY_DATA_ERROR,
@@ -18,25 +15,6 @@ const initialState = {
 
 export default function dashboardReducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_DATA:
-      return {
-        ...state,
-        dataType: action.payload.dataType,
-        isFetching: true,
-        errors: ''
-      };
-    case FETCH_DATA_SUCCESS:
-      return {
-        ...state,
-        errors: '',
-        isFetching: false
-      };
-    case FETCH_DATA_ERROR:
-      return {
-        ...state,
-        errors: action.payload,
-        isFetching: false
-      };
     case DISPLAY_DATA:
       return {
         ...state,

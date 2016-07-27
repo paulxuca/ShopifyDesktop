@@ -8,7 +8,7 @@ export const numberDataTypes = {
   total_discounts: 'total_discounts',
   total_line_items_price: 'total_line_items_price',
   total_price_usd: 'total_price_usd',
-  'total_spent': 'total_spent',
+  total_spent: 'total_spent',
   order_number: 'order_number'
 };
 
@@ -130,3 +130,5 @@ export const DataDefaults = {
   customers,
   products,
 };
+
+export const iteration = ['customers', 'orders', 'products'];

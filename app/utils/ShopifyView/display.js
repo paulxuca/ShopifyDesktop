@@ -73,7 +73,7 @@ function selectData(view, params, action, query) {
 
       const newParams = shallowMerge(params, pointerParams);
       // resolving params because of updating pointer potentially
-      resolve({ res: filteredList.splice(0, res.length - 1), params: newParams });
+      resolve({ res: filteredList.length > 100 ? filteredList.splice(0, 100) : filteredList, params: newParams });
     });
   });
 }

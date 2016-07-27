@@ -32,9 +32,21 @@ const customerSearchTypes = [
   },
 ];
 
+const productSearchTypes = [
+  {
+    name: 'Accessories',
+    query: 'product_type = "accessories"'
+  },
+  {
+    name: 'Sweaters',
+    query: 'product_type = "sweater"'
+  }
+];
+
 const presets = {
   orders: orderSearchTypes,
-  customers: customerSearchTypes
+  customers: customerSearchTypes,
+  products: productSearchTypes
 };
 
 export default presets;

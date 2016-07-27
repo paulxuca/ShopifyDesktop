@@ -41,6 +41,8 @@ class DashboardList extends Component {
       return true;
     } else if (nextState.presetsMenuOpen !== this.state.presetsMenuOpen) {
       return true;
+    } else if (nextProps.searchQuery !== this.props.searchQuery) {
+      return true;
     }
     return false;
   }
@@ -84,6 +86,7 @@ class DashboardList extends Component {
           name={queries[key].name}
           key={queries[key].name}
           query={queries[key].query}
+          alignment="flex-start"
         />);
     }
     return listNodes;

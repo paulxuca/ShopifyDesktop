@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { numberDataTypes, booleanDataTypes, DataDefaults } from './constants';
+import { numberDataTypes, booleanDataTypes, DataDefaults, iteration } from './constants';
 import { fetchType } from './fetch';
 const remote = require('electron').remote;
 
@@ -17,6 +17,7 @@ function checkForTable(table) {
 
 function grabColumnsFromResult(data) {
   const columns = Object.keys(data);
+  if(columns.length === 60) console.log(data);
   const returnedColumns = [];
   // console.log(numberDataTypes);
   let iter = 0;
@@ -78,20 +79,22 @@ function insertDataIntoTable(table, data) {
 }
 
 export async function fetchData(accessToken, storeName) {
-  try {
-    const currType = 'customers';
-    const fetchedData = await fetchType(currType, accessToken, storeName);
-    if (fetchedData) {
-      const tableExists = await checkForTable(currType);
-      if (!tableExists) {
-        const dataToBeGrabbedFrom = _.maxBy(fetchedData[0], (data) => { return Object.keys(data).length; }); //eslint-disable-line
-        const columns = grabColumnsFromResult(dataToBeGrabbedFrom);
-        await createTable(currType, columns);
+  for (let i = 0; i < 1; i++) {
+    try {
+      const currType = 'orders';
+      const fetchedData = await fetchType(currType, accessToken, storeName);
+      if (fetchedData) {
+        const tableExists = await checkForTable(currType);
+        if (!tableExists) {
+          const dataToBeGrabbedFrom = _.maxBy(fetchedData[0], (data) => { return Object.keys(data).length; }); //eslint-disable-line
+          const columns = grabColumnsFromResult(dataToBeGrabbedFrom);
+          await createTable(currType, columns);
+        }
+        await insertDataIntoTable(currType, fetchedData);
       }
-      await insertDataIntoTable(currType, fetchedData);
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.log(err);
   }
 }
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 const { BrowserWindow } = require('electron').remote;
 
 import { mergeObjects } from '../../utils/Shopify/helpers';
+import { fetchData } from '../../utils/Shopify/index';
 import {
   LOGIN_SHOP,
   LOGIN_SHOP_SUCCESS,
@@ -10,9 +11,37 @@ import {
   CREDENTIALS_CHECK,
   CREDENTIALS_CHECK_VALID,
   CREDENTIALS_CHECK_INVALID,
+  FETCH_DATA,
+  FETCH_DATA_SUCCESS,
   authServerURL
 } from './constants';
 
+
+
+function fetchDataAction(accessToken, storeName) {
+  return dispatch => {
+    dispatch(fetchDataDispatch('orders', {}));
+    fetchData(accessToken, storeName);
+    dispatch(fetchDataDispatchSuccess());
+  };
+}
+
+
+function fetchDataDispatch(dataType, params) {
+  return {
+    payload: {
+      dataType,
+      params
+    },
+    type: FETCH_DATA
+  };
+}
+
+function fetchDataDispatchSuccess() {
+  return {
+    type: FETCH_DATA_SUCCESS
+  };
+}
 
 function loginShop(data) {
   return dispatch => { //eslint-disable-line
@@ -32,7 +61,10 @@ function loginShop(data) {
               accessToken
             };
             mergeObjects('userKeys', writeToDisk)
-            .then(() => { if (data) resolve(dispatch(loginShopSucess(writeToDisk))); })
+            .then(() => {
+              if (data) resolve(dispatch(loginShopSucess(writeToDisk)));
+              dispatch(fetchDataAction(accessToken, storeName));
+            })
             .catch((err) => { if (err) reject(err); });
           })
           .catch(err => {
@@ -105,5 +137,6 @@ function checkCredentialsInvalid(errors) {
 
 export default {
   checkCredentials,
-  loginShop
+  loginShop,
+  fetchDataAction
 };

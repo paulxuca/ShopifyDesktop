@@ -4,13 +4,16 @@ import {
   LOGIN_SHOP_ERROR,
   CREDENTIALS_CHECK,
   CREDENTIALS_CHECK_VALID,
-  CREDENTIALS_CHECK_INVALID
+  CREDENTIALS_CHECK_INVALID,
+  FETCH_DATA,
+  FETCH_DATA_SUCCESS,
+  FETCH_DATA_ERROR
 } from './constants';
 
 const initialState = {
   data: '',
   errors: '',
-  isAuthing: false
+  isFetching: false,
 };
 
 export default function mainAppReducer(state = initialState, action) {
@@ -18,39 +21,58 @@ export default function mainAppReducer(state = initialState, action) {
     case CREDENTIALS_CHECK:
       return {
         ...state,
-        isAuthing: true
+        isFetching: true
       };
     case CREDENTIALS_CHECK_VALID:
       return {
         ...state,
-        isAuthing: false,
+        isFetching: false,
         errors: '',
         data: action.payload
       };
     case CREDENTIALS_CHECK_INVALID:
       return {
         ...state,
-        isAuthing: false,
+        isFetching: false,
         errors: action.payload
       };
     case LOGIN_SHOP:
       return {
         ...state,
-        isAuthing: true,
+        isFetching: true,
         errors: ''
       };
     case LOGIN_SHOP_SUCCESS:
       return {
         ...state,
         data: action.payload,
-        isAuthing: false,
+        isFetching: false,
         errors: ''
       };
     case LOGIN_SHOP_ERROR:
       return {
         ...state,
-        isAuthing: false,
+        isFetching: false,
         errors: action.payload
+      };
+    case FETCH_DATA:
+      return {
+        ...state,
+        dataType: action.payload.dataType,
+        isFetching: true,
+        errors: ''
+      };
+    case FETCH_DATA_SUCCESS:
+      return {
+        ...state,
+        errors: '',
+        isFetching: false
+      };
+    case FETCH_DATA_ERROR:
+      return {
+        ...state,
+        errors: action.payload,
+        isFetching: false
       };
     default:
       return state;

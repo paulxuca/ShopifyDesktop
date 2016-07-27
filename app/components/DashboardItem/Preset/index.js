@@ -5,7 +5,8 @@ export default class Preset extends Component {
     name: PropTypes.string.isRequired,
     query: PropTypes.string.isRequired,
     onPresetClick: PropTypes.func.isRequired,
-    currentQuery: PropTypes.bool
+    currentQuery: PropTypes.bool,
+    alignment: PropTypes.string
   }
 
   onPresetClick() {
@@ -15,6 +16,7 @@ export default class Preset extends Component {
   render() {
     return (
       <span
+        style={{ justifyContent: this.props.alignment || 'center' }}
         onClick={::this.onPresetClick}
         className={this.props.currentQuery ? 'active' : ''}
       >
