@@ -96,7 +96,7 @@ class DashboardList extends Component {
     return (
       <div className="search-presets">
         <div className="presets-desc">
-          <span className="presets-title">Filter By</span>
+          <div className="presets-title"><span style={{ marginLeft: 20 }}>Filter By</span></div>
         </div>
         <div className="presets" >
         {searchPresets[this.props.dataType].map((elem) => {

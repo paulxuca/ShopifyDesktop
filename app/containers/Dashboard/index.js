@@ -39,14 +39,9 @@ class Dashboard extends Component {
 
     this.props.actions.authActions.checkCredentials()
     .then(() => {
-      const { accessToken, storeName } = this.props.state.mainAppReducer.data;
-      const { isFetching, dataType } = this.props.state.dashboardMainReducer;
+      const { dataType } = this.props.state.dashboardMainReducer;
       const { fetchDataAction, displayDataAction } = this.props.actions.dataActions; // eslint-disable-line
 
-
-      if (accessToken &&
-        storeName &&
-        !isFetching) fetchDataAction(accessToken, storeName);
 
       const originalParams = {
         dataType
