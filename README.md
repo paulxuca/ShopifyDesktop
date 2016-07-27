@@ -8,5 +8,5 @@ Shopify Desktop Client written in React, Redux and Electron.
 4) Rebuild the binaries for sqlite3 against your current OS with "**npm run electron-rebuild**"
 
 #Screen shots  
-!["Login Screen"]('resources/loginscreen.png')  
-!["Main Dashboard"]('resources/maindashboard.png')  
+!["Login Screen"](resources/loginscreen.png)  
+!["Main Dashboard"](resources/maindashboard.png)  
