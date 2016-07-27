@@ -15,9 +15,8 @@ function checkForTable(table) {
   });
 }
 
-function grabColumnsFromResult(data) {
+function grabColumnsFromResult(data, dataType) {
   const columns = Object.keys(data);
-  if(columns.length === 60) console.log(data);
   const returnedColumns = [];
   // console.log(numberDataTypes);
   let iter = 0;
@@ -29,6 +28,9 @@ function grabColumnsFromResult(data) {
     } else {
       returnedColumns.push(`${columns[iter]} TEXT`);
     }
+  }
+  if (dataType === 'orders' && returnedColumns.length !== 60) {
+    returnedColumns.push('status TEXT');
   }
   return (`(${returnedColumns.join(', ')})`);
 }
@@ -79,15 +81,15 @@ function insertDataIntoTable(table, data) {
 }
 
 export async function fetchData(accessToken, storeName) {
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < iteration.length; i++) {
     try {
-      const currType = 'orders';
+      const currType = iteration[i];
       const fetchedData = await fetchType(currType, accessToken, storeName);
       if (fetchedData) {
         const tableExists = await checkForTable(currType);
         if (!tableExists) {
           const dataToBeGrabbedFrom = _.maxBy(fetchedData[0], (data) => { return Object.keys(data).length; }); //eslint-disable-line
-          const columns = grabColumnsFromResult(dataToBeGrabbedFrom);
+          const columns = grabColumnsFromResult(dataToBeGrabbedFrom, currType);
           await createTable(currType, columns);
         }
         await insertDataIntoTable(currType, fetchedData);
