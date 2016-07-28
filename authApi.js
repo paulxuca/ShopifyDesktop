@@ -79,6 +79,7 @@ module.exports = function(app){
                 }
             }));
           }
+          
 
           Promise.all(functionsToRun)
           User.update({storeName: shop, accessToken: authResponse}, {$set: {webhooksSetUp: true}}, function(err, data){
