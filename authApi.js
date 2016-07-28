@@ -84,6 +84,7 @@ module.exports = function(app){
           .then(function(data){
             // console.log(data);
             User.update({storeName: shop, accessToken: authResponse}, {$set: {webhooksSetUp: true}}, function(err, data){
+              if(err) console.log(err);
               if(!err) response.sendFile(__dirname + '/utils/closeWindow.html');
             });
           })
