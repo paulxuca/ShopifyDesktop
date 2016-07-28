@@ -54,9 +54,8 @@ module.exports = function(app){
 
         var functionsToRun = [];
 
-
         for(var i = 0; i< serverConstants.length;i++){
-          functionsToRun.push(currInstance.post('/webhooks',{
+          functionsToRun.push(currInstance.post('/webhooks.json',{
               "webhook":{
                 "topic": serverConstants[i],
                 "address": `${baseURL}/api/webhook`,
