@@ -47,7 +47,7 @@ module.exports = function(app){
         if (err) console.log(err); // eslint-disable-line
 
         var currInstance = axios.create({
-          baseURL: `${shop}/admin`,
+          baseURL: `https://${shop}/admin`,
           headers: { 'X-Shopify-Access-Token': authResponse }
         });
 
@@ -61,7 +61,7 @@ module.exports = function(app){
             data: {
               webhook:{
                 topic: serverConstants[i],
-                address: `https://${baseURL}/api/webhook`,
+                address: `${baseURL}/api/webhook`,
                 format: 'json'
               }
             } 
