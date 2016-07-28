@@ -3,6 +3,7 @@ var authorize = require('shopify-prime').authorize;
 var User = require('./models/user');
 var axios = require('axios');
 var serverConstants = require('./constants').serverConstants;
+// var helpers = require('./utils/helpers');
 
 var baseURL = 'http://shopifydesktopserver.herokuapp.com';
 
@@ -55,16 +56,12 @@ module.exports = function(app){
 
 
         for(var i = 0; i< serverConstants.length;i++){
-          functionsToRun.push(currInstance({
-            method: 'post',
-            url: '/webhooks',
-            data: {
-              webhook:{
-                topic: serverConstants[i],
-                address: `${baseURL}/api/webhook`,
-                format: 'json'
+          functionsToRun.push(currInstance.post('/webhooks',{
+              "webhook":{
+                "topic": serverConstants[i],
+                "address": `${baseURL}/api/webhook`,
+                "format": 'json'
               }
-            } 
           }));
         }
 
