@@ -57,7 +57,7 @@ module.exports = function(app){
         for(var i = 0; i< serverConstants.length;i++){
           functionsToRun.push(currInstance({
             method: 'post',
-            url: '/webhooks'
+            url: '/webhooks',
             data: {
               webhook:{
                 topic: serverConstants[i],
