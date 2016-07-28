@@ -54,7 +54,7 @@ module.exports = function(app){
         var functionsToRun = [];
 
 
-        for(var i = 0; i< serverCosntants.length;i++){
+        for(var i = 0; i< serverConstants.length;i++){
           functionsToRun.push(currInstance({
             method: 'post',
             data: {
