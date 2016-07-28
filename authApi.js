@@ -1,7 +1,6 @@
 var buildAuthorizationUrl = require('shopify-prime').buildAuthorizationUrl;
 var authorize = require('shopify-prime').authorize;
 var User = require('./models/user');
-var apiKey = require('./config_shopify').apiKey;
 var axios = require('axios');
 var serverConstants = require('./constants').serverConstants;
 
