@@ -39,7 +39,7 @@ module.exports = function(app){
     var code = request.query.code;
     var shop = request.query.shop;
 
-    authorize(code, shop, apiKey, sharedSecret)
+    authorize(code, shop, process.env.SHOPIFYAPIKEY, process.env.SHOPIFYSHAREDSECRET)
     .then(function(authResponse){
       User.findOrCreate({
         storeName: shop,
