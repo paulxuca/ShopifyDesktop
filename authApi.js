@@ -5,6 +5,7 @@ var axios = require('axios');
 var serverConstants = require('./constants').serverConstants;
 // var helpers = require('./utils/helpers');
 
+
 var baseURL = 'http://shopifydesktopserver.herokuapp.com';
 
 module.exports = function(app){
@@ -87,6 +88,7 @@ module.exports = function(app){
             if(!err) response.sendFile(__dirname + '/utils/closeWindow.html');
           });
         }
+
       });
     })
     .catch(function(err){ response.status(400).json(err); });
