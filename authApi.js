@@ -1,14 +1,20 @@
 var buildAuthorizationUrl = require('shopify-prime').buildAuthorizationUrl;
 var authorize = require('shopify-prime').authorize;
 var User = require('./models/user');
-var apiKey = require('./config_shopify').apiKey;
-var sharedSecret = require('./config_shopify').sharedSecret;
 var axios = require('axios');
 var serverConstants = require('./constants').serverConstants;
+// var helpers = require('./utils/helpers');
+
 
 var baseURL = 'http://shopifydesktopserver.herokuapp.com';
 
 module.exports = function(app){
+  app.post('/api/webhook', function(request, response){
+    console.log(request.body, request.data, request.params);
+    response.status(200).json({data:'cool'});
+  });
+
+
   app.get('/', function(request, response) {
       response.status(200).json({data: 'Yes its working'});
   }); 
@@ -31,8 +37,13 @@ module.exports = function(app){
     'read_content',
     'read_customers',
     'read_products',
-    'read_analytics'];
-    buildAuthorizationUrl(permissions, shopURL, apiKey, redirectUrl)
+    'read_fulfillments',
+    'write_orders',
+    'write_content',
+    'write_customers',
+    'write_products',
+    'write_fulfillments'];
+    buildAuthorizationUrl(permissions, shopURL, process.env.SHOPIFYAPIKEY, redirectUrl)
     .then(function(response){ res.status(200).json(response); });
   });
 
@@ -40,45 +51,43 @@ module.exports = function(app){
     var code = request.query.code;
     var shop = request.query.shop;
 
-    authorize(code, shop, apiKey, sharedSecret)
+    authorize(code, shop, process.env.SHOPIFYAPIKEY, process.env.SHOPIFYSHAREDSECRET)
     .then(function(authResponse){
       User.findOrCreate({
         storeName: shop,
-        accessToken: authResponse
-      }, function(err){
+        accessToken: authResponse,
+        webhooksSetUp: false
+      }, function(err, data){
         if (err) console.log(err); // eslint-disable-line
 
         var currInstance = axios.create({
-          baseURL: `${shop}/admin/webhooks.json`,
+          baseURL: `https://${shop}/admin`,
           headers: { 'X-Shopify-Access-Token': authResponse }
         });
 
-        var functionsToRun = [];
-
-
-        for(var i = 0; i< serverCosntants.length;i++){
-          functionsToRun.push(currInstance({
-            method: 'post',
-            data: {
-              webhook:{
-                topic: serverConstants[i],
-                address: `${baseURL}/api/webhook`,
-                format: 'json'
-              }
-            } 
-          }));
-        }
-
-        Promise.all(functionsToRun)
-        .then(function(data){
-          console.log(data);
+        if(data.webhooksSetUp){
           response.sendFile(__dirname + '/utils/closeWindow.html');
-        })
-        .catch(function(err){
-          if(err) console.log(err);
-        });
+        } else {
 
+          var functionsToRun = [];
 
+          for(var i = 0; i< serverConstants.length;i++){
+            functionsToRun.push(currInstance.post('/webhooks.json',{
+                "webhook":{
+                  "topic": serverConstants[i],
+                  "address": `${baseURL}/api/webhook`,
+                  "format": 'json'
+                }
+            }));
+          }
+          
+
+          Promise.all(functionsToRun)
+          User.update({storeName: shop, accessToken: authResponse}, {$set: {webhooksSetUp: true}}, function(err, data){
+            if(err) console.log(err);
+            if(!err) response.sendFile(__dirname + '/utils/closeWindow.html');
+          });
+        }
 
       });
     })
