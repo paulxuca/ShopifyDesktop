@@ -30,7 +30,7 @@ module.exports = function(app){
     'read_customers',
     'read_products',
     'read_analytics'];
-    buildAuthorizationUrl(permissions, shopURL, apiKey, redirectUrl)
+    buildAuthorizationUrl(permissions, shopURL, process.env.SHOPIFYAPIKEY, redirectUrl)
     .then(function(response){ res.status(200).json(response); });
   });
 
