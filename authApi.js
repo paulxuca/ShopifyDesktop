@@ -55,7 +55,7 @@ module.exports = function(app){
       User.findOrCreate({
         storeName: shop,
         accessToken: authResponse,
-        webhooksSetUp: true
+        webhooksSetUp: false
       }, function(err, data){
         if (err) console.log(err); // eslint-disable-line
 
@@ -82,8 +82,10 @@ module.exports = function(app){
 
           Promise.all(functionsToRun)
           .then(function(data){
-            console.log(data);
-            response.sendFile(__dirname + '/utils/closeWindow.html');
+            // console.log(data);
+            User.update({storeName: shop, accessToken: authResponse}, {$set: {webhooksSetUp: true}}, function(err, data){
+              if(!err) response.sendFile(__dirname + '/utils/closeWindow.html');
+            });
           })
           .catch(function(err){
             if(err) console.log(err);
