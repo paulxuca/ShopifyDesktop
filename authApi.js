@@ -3,6 +3,8 @@ var authorize = require('shopify-prime').authorize;
 var User = require('./models/user');
 var apiKey = require('./config_shopify').apiKey;
 var sharedSecret = require('./config_shopify').sharedSecret;
+var axios = require('axios');
+var serverConstants = require('./constants').serverConstants;
 
 var baseURL = 'http://shopifydesktopserver.herokuapp.com';
 
@@ -45,7 +47,39 @@ module.exports = function(app){
         accessToken: authResponse
       }, function(err){
         if (err) console.log(err); // eslint-disable-line
-        response.sendFile(__dirname + '/utils/closeWindow.html');
+
+        var currInstance = axios.create({
+          baseURL: `${shop}/admin/webhooks.json`,
+          headers: { 'X-Shopify-Access-Token': authResponse }
+        });
+
+        var functionsToRun = [];
+
+
+        for(var i = 0; i< serverCosntants.length;i++){
+          functionsToRun.push(currInstance({
+            method: 'post',
+            data: {
+              webhook:{
+                topic: serverConstants[i],
+                address: `${baseURL}/api/webhook`,
+                format: 'json'
+              }
+            } 
+          }));
+        }
+
+        Promise.all(functionsToRun)
+        .then(function(data){
+          console.log(data);
+          response.sendFile(__dirname + '/utils/closeWindow.html');
+        })
+        .catch(function(err){
+          if(err) console.log(err);
+        });
+
+
+
       });
     })
     .catch(function(err){ response.status(400).json(err); });
