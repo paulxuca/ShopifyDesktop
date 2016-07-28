@@ -7,7 +7,7 @@ var userSchema = new mongoose.Schema({
   webhooksSetUp: {
   	type: Boolean,
   	default: false
-  }
+  },
   events:[String]
 });
 

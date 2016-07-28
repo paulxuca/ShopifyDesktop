@@ -8,6 +8,12 @@ var serverConstants = require('./constants').serverConstants;
 var baseURL = 'http://shopifydesktopserver.herokuapp.com';
 
 module.exports = function(app){
+  app.post('/api/webhook', function(request, response){
+    console.log(request.body, request.data, request.params);
+    response.status(200).json({data:'cool'});
+  });
+
+
   app.get('/', function(request, response) {
       response.status(200).json({data: 'Yes its working'});
   }); 
