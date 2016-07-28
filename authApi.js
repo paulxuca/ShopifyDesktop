@@ -81,12 +81,9 @@ module.exports = function(app){
           }
 
           Promise.all(functionsToRun)
-          .then(function(data){
-            // console.log(data);
-            User.update({storeName: shop, accessToken: authResponse}, {$set: {webhooksSetUp: true}}, function(err, data){
-              if(err) console.log(err);
-              if(!err) response.sendFile(__dirname + '/utils/closeWindow.html');
-            });
+          User.update({storeName: shop, accessToken: authResponse}, {$set: {webhooksSetUp: true}}, function(err, data){
+            if(err) console.log(err);
+            if(!err) response.sendFile(__dirname + '/utils/closeWindow.html');
           });
         }
       });
