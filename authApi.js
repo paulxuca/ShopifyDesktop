@@ -61,7 +61,7 @@ module.exports = function(app){
             data: {
               webhook:{
                 topic: serverConstants[i],
-                address: `${baseURL}/api/webhook`,
+                address: `https://${baseURL}/api/webhook`,
                 format: 'json'
               }
             } 
