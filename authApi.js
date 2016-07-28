@@ -30,7 +30,12 @@ module.exports = function(app){
     'read_content',
     'read_customers',
     'read_products',
-    'read_analytics'];
+    'read_fulfillments',
+    'write_orders',
+    'write_content',
+    'write_customers',
+    'write_products',
+    'write_fulfillments'];
     buildAuthorizationUrl(permissions, shopURL, process.env.SHOPIFYAPIKEY, redirectUrl)
     .then(function(response){ res.status(200).json(response); });
   });
@@ -43,8 +48,9 @@ module.exports = function(app){
     .then(function(authResponse){
       User.findOrCreate({
         storeName: shop,
-        accessToken: authResponse
-      }, function(err){
+        accessToken: authResponse,
+        webhooksSetUp: true
+      }, function(err, data){
         if (err) console.log(err); // eslint-disable-line
 
         var currInstance = axios.create({
@@ -52,29 +58,31 @@ module.exports = function(app){
           headers: { 'X-Shopify-Access-Token': authResponse }
         });
 
-        var functionsToRun = [];
-
-        for(var i = 0; i< serverConstants.length;i++){
-          functionsToRun.push(currInstance.post('/webhooks.json',{
-              "webhook":{
-                "topic": serverConstants[i],
-                "address": `${baseURL}/api/webhook`,
-                "format": 'json'
-              }
-          }));
-        }
-
-        Promise.all(functionsToRun)
-        .then(function(data){
-          console.log(data);
+        if(data.webhooksSetUp){
           response.sendFile(__dirname + '/utils/closeWindow.html');
-        })
-        .catch(function(err){
-          if(err) console.log(err);
-        });
+        } else {
 
+          var functionsToRun = [];
 
+          for(var i = 0; i< serverConstants.length;i++){
+            functionsToRun.push(currInstance.post('/webhooks.json',{
+                "webhook":{
+                  "topic": serverConstants[i],
+                  "address": `${baseURL}/api/webhook`,
+                  "format": 'json'
+                }
+            }));
+          }
 
+          Promise.all(functionsToRun)
+          .then(function(data){
+            console.log(data);
+            response.sendFile(__dirname + '/utils/closeWindow.html');
+          })
+          .catch(function(err){
+            if(err) console.log(err);
+          });
+        }
       });
     })
     .catch(function(err){ response.status(400).json(err); });

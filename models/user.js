@@ -4,6 +4,10 @@ var supergoose = require('supergoose');
 var userSchema = new mongoose.Schema({
   storeName: String,
   accessToken: String,
+  webhooksSetUp: {
+  	type: Boolean,
+  	default: false
+  }
   events:[String]
 });
 
