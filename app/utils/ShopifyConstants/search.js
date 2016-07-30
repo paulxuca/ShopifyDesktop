@@ -9,7 +9,7 @@ const orderSearchTypes = [
   },
   {
     name: 'Unfulfilled',
-    query: 'fulfillment_status != "fulfilled"',
+    query: 'fulfillment_status != "fulfilled" AND financial_status != "refunded" AND fulfillment_status != "null"',
   },
   {
     name: 'Unpaid',
@@ -33,6 +33,10 @@ const customerSearchTypes = [
 ];
 
 const productSearchTypes = [
+  {
+    name: 'All',
+    query: 'product_type !=  ""'
+  },
   {
     name: 'Accessories',
     query: 'product_type = "accessories"'

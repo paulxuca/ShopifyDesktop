@@ -37,11 +37,11 @@ class Dashboard extends Component {
     this is just the development env which fetches data from api on load
     */
 
-    this.props.actions.authActions.checkCredentials()
+    this.props.actions.auth.checkCredentials()
     .then(() => {
       const { dashboardMainReducer } = this.props.state;
       const dataType = dashboardMainReducer.get('dataType');
-      const { fetchDataAction, displayDataAction } = this.props.actions.dataActions; // eslint-disable-line
+      const { fetchDataAction, displayDataAction } = this.props.actions.data; // eslint-disable-line
 
 
       const originalParams = {
@@ -62,7 +62,7 @@ class Dashboard extends Component {
   onChangeListDisplay = (data) => {
     const { displayParams } = this.state;
 
-    this.props.actions.dataActions.displayDataAction(displayParams.dataType,
+    this.props.actions.data.displayDataAction(displayParams.dataType,
      displayParams, data, displayParams.query);
   }
 
@@ -71,12 +71,12 @@ class Dashboard extends Component {
   }
 
   onNavigationItemClick = (nextView) => {
-    this.props.actions.navigationActions.navigateTo(nextView)
+    this.props.actions.navigation.navigateTo(nextView)
     .then(() => {
       const newParams = shallowMerge(this.state.displayParams, { dataType: nextView });
       this.updateViewParams(newParams)
       .then(() => {
-          this.props.actions.dataActions.displayDataAction(this.state.displayParams.dataType, this.state.displayParams); //eslint-disable-line
+          this.props.actions.data.displayDataAction(this.state.displayParams.dataType, this.state.displayParams); //eslint-disable-line
         // when clicking on a new view, we will display new data obviously
       });
     });
@@ -86,7 +86,7 @@ class Dashboard extends Component {
     const newParams = shallowMerge(this.state.displayParams, { query });
     this.updateViewParams(newParams)
     .then(() => {
-      this.props.actions.dataActions
+      this.props.actions.data
       .displayDataAction(
         this.state.displayParams.dataType,
         this.state.displayParams,
@@ -159,9 +159,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      dataActions: bindActionCreators({ fetchDataAction, displayDataAction }, dispatch),
-      navigationActions: bindActionCreators({ navigateTo }, dispatch),
-      authActions: bindActionCreators({ checkCredentials }, dispatch)
+      data: bindActionCreators({ fetchDataAction, displayDataAction }, dispatch),
+      navigation: bindActionCreators({ navigateTo }, dispatch),
+      auth: bindActionCreators({ checkCredentials }, dispatch)
     }
   };
 }

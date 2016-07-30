@@ -1,3 +1,5 @@
+import { fromJS } from 'immutable';
+
 import {
     FETCH_AUTOFILL_FIELDS,
     FETCH_AUTOFILL_FIELDS_SUCCESS,
@@ -9,59 +11,37 @@ import {
     FETCH_QUERY_SUCCESS
   } from './constants';
 
-const initalState = {
+const initialState = fromJS({
   fields: '',
   queries: '',
   errors: '',
   fetchingFields: false,
   savingQuery: false
-};
+});
 
-export default function searchReducer(state = initalState, action) {
+export default function searchReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_QUERY:
-      return {
-        ...state,
-        fetchingFields: true
-      };
+      return state.set('fetchingFields', true);
     case FETCH_QUERY_SUCCESS:
-      return {
-        ...state,
-        queries: action.payload
-      };
+      return state.set('queries', fromJS(action.payload));
     case SAVE_QUERY:
-      return {
-        ...state,
-        savingQuery: true
-      };
+      return state.set('savingQuery', true);
     case SAVE_QUERY_SUCCESS:
-      return {
-        ...state,
-        savingQuery: false
-      };
+      return state.set('savingQuery', false);
     case SAVE_QUERY_ERROR:
-      return {
-        ...state,
-        savingQuery: false,
-        errors: action.payload
-      };
+      return state.set('savingQuery', false)
+                  .set('errors', fromJS(action.payload));
     case FETCH_AUTOFILL_FIELDS:
-      return {
-        ...state,
-        fetchingFields: true
-      };
+      return state.set('fetchingFields', true);
     case FETCH_AUTOFILL_FIELDS_SUCCESS:
-      return {
-        fields: action.payload,
-        fetchingFields: false,
-        errors: ''
-      };
+      return state.set('fields', fromJS(action.payload))
+                  .set('fetchingFields', false)
+                  .set('errors', '');
     case FETCH_AUTOFILL_FIELDS_ERROR:
-      return {
-        fields: '',
-        fetchingFields: false,
-        errors: action.payload
-      };
+      return state.set('fields', '')
+                  .set('fetchingFields', false)
+                  .set('errors', fromJS(action.payload));
     default:
       return state;
   }

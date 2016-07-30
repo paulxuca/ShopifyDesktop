@@ -36,7 +36,7 @@ class DashboardSearch extends Component {
   componentWillReceiveProps(newProps) {
     if (newProps.dataType !== this.props.dataType) {
       this.setState(initialState);
-      this.props.actions.searchActions.getAutofillFieldsAction(newProps.dataType);
+      this.props.actions.search.getAutofillFieldsAction(newProps.dataType);
     }
   }
 
@@ -47,7 +47,7 @@ class DashboardSearch extends Component {
   onSearchInput = (newValue) => {
     if (this.state.querySaveDropdownOpen) this.setState({ querySaveDropdownOpen: false });
     this.setState({ searchQuery: newValue,
-                    suggestions: getSuggestions(newValue, this.props.state.fields) });
+                    suggestions: getSuggestions(newValue, this.props.state.get('fields')) });
   }
 
   onSearch = (event) => {
@@ -106,7 +106,7 @@ class DashboardSearch extends Component {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                this.props.actions.searchActions.saveQueryAction(this.state.searchQuery, this.props.dataType, this.state.querySaveName);
+                this.props.actions.search.saveQueryAction(this.state.searchQuery, this.props.dataType, this.state.querySaveName);
               }}
             >
               <input
@@ -125,14 +125,14 @@ class DashboardSearch extends Component {
 
 function mapStateToProps(state) {
   return {
-    state: state.searchReducer
+    state: state.get('searchReducer')
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      searchActions: bindActionCreators(searchActions, dispatch)
+      search: bindActionCreators(searchActions, dispatch)
     }
   };
 }

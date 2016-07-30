@@ -21,7 +21,7 @@ class DashboardList extends Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.dataType !== this.props.dataType) {
-      this.props.actions.dashboardActions.fetchQueryAction(newProps.dataType);
+      this.props.actions.dashboard.fetchQueryAction(newProps.dataType);
     }
   }
 
@@ -58,7 +58,7 @@ class DashboardList extends Component {
 
   generateList = () => {
     if (this.props.listData) {
-      return this.props.listData.toArray().map((each) => {
+      return this.props.listData.map((each) => {
         return this.generateListItem(each.toJS());
       });
     }
@@ -120,9 +120,7 @@ class DashboardList extends Component {
     } = this.props;
     const list = (!isListFetching) ? this.generateList() :
       '';
-    // const presets = (searchPresets[dataType]) ? this.generatePresets() : null;
-    const presets = null;
-
+    const presets = (searchPresets[dataType]) ? this.generatePresets() : null;
     return (
       <div className="pane search">
 
@@ -189,7 +187,7 @@ DashboardList.PropTypes = {
 function mapStateToProps(state) {
   return {
     state: {
-      dashboardList: state.dashboardListReducer
+      dashboardList: state.get('dashboardListReducer')
     }
   };
 }
@@ -197,7 +195,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      dashboardActions: bindActionCreators(dashboardActions, dispatch)
+      dashboard: bindActionCreators(dashboardActions, dispatch)
     }
   };
 }
