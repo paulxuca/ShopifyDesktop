@@ -2,8 +2,6 @@ import axios from 'axios';
 import { storeNewestID, grabNewestID } from './helpers';
 import _ from 'lodash';
 
-
-
 function grabChunkCount(instance, dataType, sinceId) {
   let params = { //eslint-disable-line
     status: 'any'
