@@ -1,3 +1,5 @@
+import { Map, fromJS } from 'immutable';
+
 import {
   LOGIN_SHOP,
   LOGIN_SHOP_SUCCESS,
@@ -10,70 +12,42 @@ import {
   FETCH_DATA_ERROR
 } from './constants';
 
-const initialState = {
+const initialState = Map({
   data: '',
   errors: '',
-  isFetching: false,
-};
+  isFetching: false
+});
 
 export default function mainAppReducer(state = initialState, action) {
   switch (action.type) {
     case CREDENTIALS_CHECK:
-      return {
-        ...state,
-        isFetching: true
-      };
+      return state.set('isFetching', true);
     case CREDENTIALS_CHECK_VALID:
-      return {
-        ...state,
-        isFetching: false,
-        errors: '',
-        data: action.payload
-      };
+      return state.set('isFetching', false)
+                  .set('errors', '')
+                  .set('data', fromJS(action.payload));
     case CREDENTIALS_CHECK_INVALID:
-      return {
-        ...state,
-        isFetching: false,
-        errors: action.payload
-      };
+      return state.set('isFetching', false)
+                  .set('errors', fromJS(action.payload));
     case LOGIN_SHOP:
-      return {
-        ...state,
-        isFetching: true,
-        errors: ''
-      };
+      return state.set('isFetching', true)
+                  .set('errors', '');
     case LOGIN_SHOP_SUCCESS:
-      return {
-        ...state,
-        data: action.payload,
-        isFetching: false,
-        errors: ''
-      };
+      return state.set('data', fromJS(action.payload))
+                  .set('isFetching', false)
+                  .set('errors', '');
     case LOGIN_SHOP_ERROR:
-      return {
-        ...state,
-        isFetching: false,
-        errors: action.payload
-      };
+      return state.set('isFetching', false)
+                  .set('errors', fromJS(action.payload));
     case FETCH_DATA:
-      return {
-        ...state,
-        dataType: action.payload.dataType,
-        isFetching: true,
-        errors: ''
-      };
+      return state.set('isFetching', true)
+                  .set('errors', '');
     case FETCH_DATA_SUCCESS:
-      return {
-        ...state,
-        errors: '',
-        isFetching: false
-      };
+      return state.set('isFetching', false)
+                  .set('errors', '');
     case FETCH_DATA_ERROR:
-      return {
-        ...state,
-        errors: action.payload,
-        isFetching: false
-      };
+      return state.set('isFetching', false)
+                  .set('errors', fromJS(action.payload));
     default:
       return state;
   }

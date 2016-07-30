@@ -18,6 +18,7 @@ class HomePage extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props);
     const { errors, data } = this.props.state.mainAppReducer; //eslint-disable-line
     if (!errors && !data) {
       this.props.actions.checkCredentials() //eslint-disable-line
@@ -40,8 +41,8 @@ class HomePage extends Component {
   }
 
   render() {
-    const { errors, data } = this.props.state.mainAppReducer; // eslint-disable-line
-    const loading = (errors === '' && data === '') ? <div className="overlay" /> : null;
+    const { errors, data, isFetching } = this.props.state.mainAppReducer; // eslint-disable-line
+    const loading = (isFetching) ? <div className="overlay" /> : null;
     return (
       <div>
         <AppControls />
@@ -65,7 +66,7 @@ class HomePage extends Component {
 function mapStateToProps(state) {
   return {
     state: {
-      mainAppReducer: state.mainAppReducer
+      mainAppReducer: state.get('mainAppReducer')
     }
   };
 }

@@ -11,17 +11,6 @@ import * as dashboardActions from './actions';
 import searchPresets from '../../utils/ShopifyConstants/search';
 
 class DashboardList extends Component {
-  static PropTypes = {
-    displayParams: PropTypes.object.isRequired,
-    listData: PropTypes.object.isRequired,
-    onListItemClick: PropTypes.func.isRequired,
-    onSearchQuery: PropTypes.func.isRequired,
-    onChangeDisplay: PropTypes.func.isRequired,
-    dataType: PropTypes.string.isRequired,
-    isListFetching: PropTypes.bool,
-    searchQuery: PropTypes.string
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -68,9 +57,9 @@ class DashboardList extends Component {
   }
 
   generateList = () => {
-    if (this.props.listData) { //eslint-disable-line
-      return this.props.listData.map((each) => { //eslint-disable-line
-        return this.generateListItem(each);
+    if (this.props.listData) {
+      return this.props.listData.toArray().map((each) => {
+        return this.generateListItem(each.toJS());
       });
     }
     return null;
@@ -131,7 +120,8 @@ class DashboardList extends Component {
     } = this.props;
     const list = (!isListFetching) ? this.generateList() :
       '';
-    const presets = (searchPresets[dataType]) ? this.generatePresets() : null;
+    // const presets = (searchPresets[dataType]) ? this.generatePresets() : null;
+    const presets = null;
 
     return (
       <div className="pane search">
@@ -183,6 +173,18 @@ class DashboardList extends Component {
       </div>);
   }
 }
+
+DashboardList.PropTypes = {
+  displayParams: PropTypes.object.isRequired,
+  listData: PropTypes.object.isRequired,
+  onListItemClick: PropTypes.func.isRequired,
+  onSearchQuery: PropTypes.func.isRequired,
+  onChangeDisplay: PropTypes.func.isRequired,
+  dataType: PropTypes.string.isRequired,
+  isListFetching: PropTypes.bool,
+  searchQuery: PropTypes.string
+}
+
 
 function mapStateToProps(state) {
   return {

@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux';
-import { routerReducer as routing } from 'react-router-redux';
+import { combineReducers } from 'redux-immutable';
+import routing from './config/ImmutableRouteReducer';
 
 import mainAppReducer from './containers/App/reducers';
 import dashboardMainReducer from './containers/Dashboard/reducers';

@@ -20,9 +20,11 @@ import {
 
 function fetchDataAction(accessToken, storeName) {
   return dispatch => {
-    dispatch(fetchDataDispatch('orders', {}));
-    fetchData(accessToken, storeName);
-    dispatch(fetchDataDispatchSuccess());
+    dispatch(fetchDataDispatch({}));
+    fetchData(accessToken, storeName)
+    .then((res)=>{
+      dispatch(fetchDataDispatchSuccess());
+    });
   };
 }
 
@@ -30,7 +32,6 @@ function fetchDataAction(accessToken, storeName) {
 function fetchDataDispatch(dataType, params) {
   return {
     payload: {
-      dataType,
       params
     },
     type: FETCH_DATA

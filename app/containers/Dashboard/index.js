@@ -39,7 +39,8 @@ class Dashboard extends Component {
 
     this.props.actions.authActions.checkCredentials()
     .then(() => {
-      const { dataType } = this.props.state.dashboardMainReducer;
+      const { dashboardMainReducer } = this.props.state;
+      const dataType = dashboardMainReducer.get('dataType');
       const { fetchDataAction, displayDataAction } = this.props.actions.dataActions; // eslint-disable-line
 
 
@@ -111,9 +112,10 @@ class Dashboard extends Component {
   */
 
   render() {
-    const { storeName } = this.props.state.mainAppReducer.data;
-    const { dataFetched, isFetching } = this.props.state.dashboardMainReducer;
-    const { view } = this.props.state.navigationReducer;
+    const storeName = this.props.state.mainAppReducer.getIn(['data', 'storeName']);
+    const dataFetched = this.props.state.dashboardMainReducer.get('dataFetched');
+    const isFetching = this.props.state.dashboardMainReducer.get('isFetching');
+    const view = this.props.state.navigationReducer.get('view');
     const { dataType, query } = this.state.displayParams;
 
     return (
@@ -147,9 +149,9 @@ class Dashboard extends Component {
 function mapStateToProps(state) {
   return {
     state: {
-      mainAppReducer: state.mainAppReducer,
-      dashboardMainReducer: state.dashboardMainReducer,
-      navigationReducer: state.navigationReducer
+      mainAppReducer: state.get('mainAppReducer'),
+      dashboardMainReducer: state.get('dashboardMainReducer'),
+      navigationReducer: state.get('navigationReducer')
     }
   };
 }

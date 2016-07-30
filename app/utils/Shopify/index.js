@@ -81,7 +81,7 @@ function insertDataIntoTable(table, data) {
 }
 
 export async function fetchData(accessToken, storeName) {
-  for (let i = 0; i < iteration.length; i++) {
+    for (let i = 0; i < iteration.length; i++) {
     try {
       const currType = iteration[i];
       const fetchedData = await fetchType(currType, accessToken, storeName);
@@ -93,6 +93,7 @@ export async function fetchData(accessToken, storeName) {
           await createTable(currType, columns);
         }
         await insertDataIntoTable(currType, fetchedData);
+        return 'Done Inserting Data';
       }
     } catch (err) {
       console.log(err);
