@@ -233,6 +233,8 @@ span.badges:not(:first-of-type){
 
 .list-group-item.footer{
   border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .list-group-item.header, .list-group-item.footer{
@@ -266,13 +268,12 @@ span.badges:not(:first-of-type){
   display: flex;
 }
 
-.pane.no-left{
-  border:0 !important;
+.inner{
+  flex:1;
 }
 
-
-.btn-group.footer{
-  float:right;
+.pane.no-left{
+  border:0 !important;
 }
 
 .display-block{
@@ -433,4 +434,18 @@ span.badges:not(:first-of-type){
   background:none;
   border:none;
   color: #0078bd;
+}
+
+
+.pane.detail{
+  display:flex;
+  flex-direction: row;
+}
+
+.handle{
+  flex: 1;
+}
+
+.detailView{
+  flex: 99;
 }

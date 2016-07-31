@@ -11,7 +11,7 @@ class DashboardNavigation extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (nextProps.currentView === this.props.currentView) {
+    if (nextProps.currentView === this.props.currentView && nextProps.storeName === this.props.storeName ) {
       return false;
     }
     return true;

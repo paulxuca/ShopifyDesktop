@@ -18,7 +18,6 @@ class HomePage extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props);
     const { errors, data } = this.props.state.mainAppReducer; //eslint-disable-line
     if (!errors && !data) {
       this.props.actions.checkCredentials() //eslint-disable-line

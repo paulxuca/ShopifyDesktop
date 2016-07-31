@@ -7,6 +7,9 @@ import Preset from '../../components/DashboardItem/Preset';
 import Dropdown from '../../components/Dropdown';
 import DashboardSearch from '../DashboardSearch';
 
+import { selectQueries } from './selectors';
+import { createStructuredSelector } from 'reselect';
+
 import * as dashboardActions from './actions';
 import searchPresets from '../../utils/ShopifyConstants/search';
 
@@ -66,9 +69,9 @@ class DashboardList extends Component {
   }
 
   generateUserPresets = () => {
-    const { queries } = this.props.state.dashboardList;
     const listNodes = [];
-    for (let key in queries) { //eslint-disable-line
+    const { queries } = this.props;
+    for (let key in this.props.queries) { //eslint-disable-line
       listNodes.push(
         <Preset
           onPresetClick={this.onPresetClick}
@@ -183,14 +186,9 @@ DashboardList.PropTypes = {
   searchQuery: PropTypes.string
 }
 
-
-function mapStateToProps(state) {
-  return {
-    state: {
-      dashboardList: state.get('dashboardListReducer')
-    }
-  };
-}
+const mapStateToProps = createStructuredSelector({
+  queries: selectQueries()
+});
 
 function mapDispatchToProps(dispatch) {
   return {

@@ -2,11 +2,22 @@ import React, { Component } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import { fetchDataAction, displayDataAction } from './actions';
 import { navigateTo } from '../DashboardNavigation/actions';
 import { checkCredentials } from '../App/actions';
 import { shallowMerge } from '../../utils/sharedHelpers';
+
+import {
+  selectDataType,
+  selectStoreName,
+  selectDataFetched,
+  selectIsFetching,
+  selectView
+} from './selectors';
+
+import Draggable from 'react-draggable';
 
 import AppHeader from '../AppHeader';
 import DashboardNavigation from '../DashboardNavigation';
@@ -36,16 +47,13 @@ class Dashboard extends Component {
     TODO: The fetchData Action shouldn't be here, this should be in inital set up,
     this is just the development env which fetches data from api on load
     */
-
     this.props.actions.auth.checkCredentials()
     .then(() => {
-      const { dashboardMainReducer } = this.props.state;
-      const dataType = dashboardMainReducer.get('dataType');
       const { fetchDataAction, displayDataAction } = this.props.actions.data; // eslint-disable-line
 
 
       const originalParams = {
-        dataType
+        dataType: this.props.dataType
       }; // when the component is being mounted, we have a default view
 
       this.updateViewParams(originalParams).then(() => {
@@ -102,6 +110,10 @@ class Dashboard extends Component {
     });
   }
 
+  handleDrag(){
+    console.log('yues');
+  }
+
 
   /* Application Infrastructure
 
@@ -112,10 +124,6 @@ class Dashboard extends Component {
   */
 
   render() {
-    const storeName = this.props.state.mainAppReducer.getIn(['data', 'storeName']);
-    const dataFetched = this.props.state.dashboardMainReducer.get('dataFetched');
-    const isFetching = this.props.state.dashboardMainReducer.get('isFetching');
-    const view = this.props.state.navigationReducer.get('view');
     const { dataType, query } = this.state.displayParams;
 
     return (
@@ -123,21 +131,27 @@ class Dashboard extends Component {
         <div className="window-content">
           <div className="pane-group">
             <DashboardNavigation
-              storeName={storeName}
-              currentView={view}
+              storeName={this.props.storeName}
+              currentView={this.props.view}
               onClick={this.onNavigationItemClick}
             />
             <DashboardList
-              listData={dataFetched}
+              listData={this.props.dataFetched}
               dataType={dataType}
-              isListFetching={isFetching}
+              isListFetching={this.props.isFetching}
               displayParams={this.state.displayParams[`${dataType}_pointer`]}
               searchQuery={query}
               onListItemClick={this.onListItemClick}
               onChangeDisplay={this.onChangeListDisplay}
               onSearchQuery={this.onSearchQuery}
             />
-            <DashboardDetail />
+            <Draggable
+              axis="x"
+              handle=".handle"
+              handleDrag={this.handleDrag}
+            >
+              <DashboardDetail />
+            </Draggable>
           </div>
         </div>
       </AppHeader>);
@@ -145,16 +159,14 @@ class Dashboard extends Component {
 
 }
 
+const mapStateToProps = createStructuredSelector({
+  dataType: selectDataType(),
+  storeName: selectStoreName(),
+  dataFetched: selectDataFetched(),
+  isFetching: selectIsFetching(),
+  view: selectView()
+});
 
-function mapStateToProps(state) {
-  return {
-    state: {
-      mainAppReducer: state.get('mainAppReducer'),
-      dashboardMainReducer: state.get('dashboardMainReducer'),
-      navigationReducer: state.get('navigationReducer')
-    }
-  };
-}
 
 function mapDispatchToProps(dispatch) {
   return {
