@@ -25,20 +25,20 @@ export default function mainAppReducer(state = initialState, action) {
     case CREDENTIALS_CHECK_VALID:
       return state.set('isFetching', false)
                   .set('errors', '')
-                  .set('data', fromJS(action.payload));
+                  .set('data', action.payload);
     case CREDENTIALS_CHECK_INVALID:
       return state.set('isFetching', false)
-                  .set('errors', fromJS(action.payload));
+                  .set('errors', action.payload);
     case LOGIN_SHOP:
       return state.set('isFetching', true)
                   .set('errors', '');
     case LOGIN_SHOP_SUCCESS:
-      return state.set('data', fromJS(action.payload))
+      return state.set('data', action.payload)
                   .set('isFetching', false)
                   .set('errors', '');
     case LOGIN_SHOP_ERROR:
       return state.set('isFetching', false)
-                  .set('errors', fromJS(action.payload));
+                  .set('errors', action.payload);
     case FETCH_DATA:
       return state.set('isFetching', true)
                   .set('errors', '');
@@ -47,7 +47,7 @@ export default function mainAppReducer(state = initialState, action) {
                   .set('errors', '');
     case FETCH_DATA_ERROR:
       return state.set('isFetching', false)
-                  .set('errors', fromJS(action.payload));
+                  .set('errors', action.payload);
     default:
       return state;
   }

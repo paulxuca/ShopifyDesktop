@@ -18,14 +18,14 @@ const initialState = fromJS({
 export default function dashboardReducer(state = initialState, action) {
   switch (action.type) {
     case DISPLAY_DATA:
-      return state.set('dataType', fromJS(action.payload))
+      return state.set('dataType', action.payload)
                   .set('isFetching', true);
     case DISPLAY_DATA_SUCCESS:
-      return state.set('dataFetched', fromJS(action.payload.dataFetched))
+      return state.set('dataFetched', action.payload.dataFetched)
                   .set('params', action.payload)
                   .set('isFetching', false);
     case DISPLAY_DATA_ERROR:
-      return state.set('errors', fromJS(action.payload))
+      return state.set('errors', action.payload)
                   .set('isFetching', false);
     case DUMP_LIST:
       return state.set('dataFetched', null);

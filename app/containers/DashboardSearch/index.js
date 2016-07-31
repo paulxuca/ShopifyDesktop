@@ -21,13 +21,6 @@ const initialState = {
 };
 
 class DashboardSearch extends Component {
-  static PropTypes = {
-    actions: PropTypes.object.isRequired,
-    state: PropTypes.object.isRequired,
-    search: PropTypes.func.isRequired,
-    dataType: PropTypes.string
-  }
-
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -122,6 +115,14 @@ class DashboardSearch extends Component {
       </li>);
   }
 }
+
+DashboardSearch.PropTypes = {
+    actions: PropTypes.object.isRequired,
+    state: PropTypes.object.isRequired,
+    search: PropTypes.func.isRequired,
+    dataType: PropTypes.string
+}
+
 
 function mapStateToProps(state) {
   return {

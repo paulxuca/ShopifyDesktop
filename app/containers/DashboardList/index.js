@@ -59,7 +59,7 @@ class DashboardList extends Component {
   generateList = () => {
     if (this.props.listData) {
       return this.props.listData.map((each) => {
-        return this.generateListItem(each.toJS());
+        return this.generateListItem(each);
       });
     }
     return null;
