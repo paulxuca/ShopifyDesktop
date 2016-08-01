@@ -263,9 +263,9 @@ span.badges:not(:first-of-type){
 
 
 .pane.search{
-  flex:1;
   flex-direction: column;
   display: flex;
+  min-width:450px;
 }
 
 .inner{
@@ -439,13 +439,21 @@ span.badges:not(:first-of-type){
 
 .pane.detail{
   display:flex;
+  min-width:450px;
   flex-direction: row;
 }
 
+.pane-inner{
+  display:flex;
+  flex:1;
+}
+
 .handle{
-  flex: 1;
+  flex: 2;
+  max-width:10px;
+  cursor: ew-resize;
 }
 
 .detailView{
-  flex: 99;
+  flex: 100;
 }

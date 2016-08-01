@@ -197,6 +197,11 @@ h6 {
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  /*
+  Paul's Additon
+  */
+  max-width:100vw;
+  overflow-x:hidden;
 }
 
 .window-content {

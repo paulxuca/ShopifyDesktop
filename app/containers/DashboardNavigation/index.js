@@ -23,7 +23,7 @@ class DashboardNavigation extends Component {
 
   render() {
     const { storeName, currentView } = this.props; // eslint-disable-line react/prop-types, max-len
-    return (<div className="pane-sm sidebar">
+    return (<div className="pane-sm sidebar" id="pane-navigation">
       <nav className="nav-group">
         {navigationList.map((eachNav) => { // eslint-disable-line
           return (

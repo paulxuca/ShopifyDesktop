@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 
 class DashboardDetail extends Component {
   render() {
-    return (<div className="pane detail">
-      <div className="handle">
+    return (
+      <div className="pane-inner">
+        <div className="handle">
 
-      </div>
-      <div className="detailView">
-
-      </div>
-    </div>);
+        </div>
+        <div className="detailView">
+          <p>Hello</p>
+        </div>
+      </div>);
   }
 }
 

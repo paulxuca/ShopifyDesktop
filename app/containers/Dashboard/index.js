@@ -17,7 +17,7 @@ import {
   selectView
 } from './selectors';
 
-import Draggable from 'react-draggable';
+import { DraggableCore } from 'react-draggable';
 
 import AppHeader from '../AppHeader';
 import DashboardNavigation from '../DashboardNavigation';
@@ -32,6 +32,11 @@ class Dashboard extends Component {
     this.state = {
       displayParams: {
 
+      },
+      panePosition: {
+        paneLeft: null,
+        paneRight: null,
+        paneTotal: null
       }
     };
   }
@@ -47,6 +52,7 @@ class Dashboard extends Component {
     TODO: The fetchData Action shouldn't be here, this should be in inital set up,
     this is just the development env which fetches data from api on load
     */
+
     this.props.actions.auth.checkCredentials()
     .then(() => {
       const { fetchDataAction, displayDataAction } = this.props.actions.data; // eslint-disable-line
@@ -58,6 +64,16 @@ class Dashboard extends Component {
 
       this.updateViewParams(originalParams).then(() => {
         displayDataAction(this.state.displayParams.dataType, this.state.displayParams);
+        const paneLeft = document.getElementById('pane-list').getBoundingClientRect().width;
+        const paneRight = document.getElementById('pane-details').getBoundingClientRect().width;
+        const paneTotal = paneLeft + paneRight;
+        this.setState({
+          panePosition: {
+            paneLeft,
+            paneRight,
+            paneTotal
+          }
+        });
       });
     });
   }
@@ -110,8 +126,17 @@ class Dashboard extends Component {
     });
   }
 
-  handleDrag(){
-    console.log('yues');
+  handleDrag = (e, ui) => {
+    const { deltaX } = ui;
+    const newRight = this.state.panePosition.paneRight - deltaX;
+    this.setState({
+      panePosition: {
+        ...this.state.panePosition,
+        paneLeft: this.state.panePosition.paneTotal - newRight,
+        paneRight: newRight,
+      }
+    });
+    // console.log(e, ui);
   }
 
 
@@ -125,7 +150,6 @@ class Dashboard extends Component {
 
   render() {
     const { dataType, query } = this.state.displayParams;
-
     return (
       <AppHeader>
         <div className="window-content">
@@ -144,14 +168,22 @@ class Dashboard extends Component {
               onListItemClick={this.onListItemClick}
               onChangeDisplay={this.onChangeListDisplay}
               onSearchQuery={this.onSearchQuery}
+              paneFlex={this.state.panePosition.paneLeft}
             />
-            <Draggable
+            <DraggableCore
               axis="x"
               handle=".handle"
-              handleDrag={this.handleDrag}
+              onDrag={this.handleDrag}
+              position={{ x: 0, y: 0 }}
             >
-              <DashboardDetail />
-            </Draggable>
+              <div
+                className="pane detail"
+                id="pane-details"
+                style={{ flex: this.state.panePosition.paneRight }}
+              >
+                <DashboardDetail />
+              </div>
+            </DraggableCore>
           </div>
         </div>
       </AppHeader>);

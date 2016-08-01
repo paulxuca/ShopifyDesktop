@@ -35,6 +35,8 @@ class DashboardList extends Component {
       return true;
     } else if (nextProps.searchQuery !== this.props.searchQuery) {
       return true;
+    } else if (nextProps.paneFlex !== this.props.paneFlex){
+      return true;
     }
     return false;
   }
@@ -125,7 +127,7 @@ class DashboardList extends Component {
       '';
     const presets = (searchPresets[dataType]) ? this.generatePresets() : null;
     return (
-      <div className="pane search">
+      <div className="pane search" id="pane-list" style={{ flex: this.props.paneFlex }}>
 
         <DashboardSearch dataType={dataType} search={onSearchQuery} />
         {presets}
