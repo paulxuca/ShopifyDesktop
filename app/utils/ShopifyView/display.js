@@ -9,6 +9,16 @@ function parseQuery(string) {
   return splitQuery.map((elem) => { return `${elem} COLLATE NOCASE`; }).join(' AND ');
 }
 
+function selectSingleData(data){
+  return new Promise((resolve, reject) => {
+    const [id, dataType] = data.split('_');
+    remote.getGlobal('sql').get(`SELECT * FROM ${dataType} WHERE id="${id}"`, (err, data) => {
+      if(err) reject(err);
+      resolve(data);
+    })
+  });
+}
+
 function selectData(view, params, action, query) {
   return new Promise((resolve, reject) => {
     /* Watcher for Pagination
@@ -80,5 +90,6 @@ function selectData(view, params, action, query) {
 
 
 export default {
-  selectData
+  selectData,
+  selectSingleData
 };

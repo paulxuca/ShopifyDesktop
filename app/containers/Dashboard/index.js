@@ -37,7 +37,8 @@ class Dashboard extends Component {
         paneLeft: null,
         paneRight: null,
         paneTotal: null
-      }
+      },
+      detailView: null
     };
   }
 
@@ -91,7 +92,9 @@ class Dashboard extends Component {
   }
 
   onListItemClick = (data) => {
-    console.log(data);
+    this.setState({
+      detailView: data
+    });
   }
 
   onNavigationItemClick = (nextView) => {
@@ -181,7 +184,9 @@ class Dashboard extends Component {
                 id="pane-details"
                 style={{ flex: this.state.panePosition.paneRight }}
               >
-                <DashboardDetail />
+                <DashboardDetail
+                  detailViewData={this.state.detailView}
+                 />
               </div>
             </DraggableCore>
           </div>

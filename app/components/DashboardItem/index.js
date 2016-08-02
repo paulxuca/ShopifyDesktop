@@ -1,7 +1,5 @@
 import { Component, PropTypes } from 'react';
-import { generateCustomer, generateOrder, generateProducts } from './rendering';
 import shallowCompare from 'react-addons-shallow-compare';
-
 
 class DashboardListItem extends Component {
   static PropTypes = {
@@ -21,10 +19,13 @@ class DashboardListItem extends Component {
     const { properties, view } = this.props;
 
       if(view === 'orders') { //eslint-disable-line
+        const generateOrder = require('./rendering').generateOrder;
         return generateOrder(properties, this.listItemClick);
       } else if (view === 'customers') {
+        const generateCustomer = require('./rendering').generateCustomer;
         return generateCustomer(properties, this.listItemClick);
       } else if (view === 'products') {
+        const generateProducts = require('./rendering').generateProducts;
         return generateProducts(properties, this.listItemClick);
       }
   }
